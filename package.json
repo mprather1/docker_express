@@ -1,0 +1,8 @@
+{
+  "name": "docker_express",
+  "version": "0.0.1",
+  "main": "build/server.js",
+  "repository": "github.com/mprather1/docker_express",
+  "author": "Michael Prather",
+  "license": "MIT"
+}
