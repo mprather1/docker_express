@@ -15,7 +15,6 @@ const options = {
 const {app, environment, logger} = options
 
 if (environment === 'development') {
-  logger.info('environment: development')
   app.use(morgan('dev'))
 }
 

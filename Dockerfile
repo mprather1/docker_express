@@ -18,9 +18,7 @@ RUN printf "Installing dependencies...\n" &&\
   yarn install && \
 
   printf "Building in progress...\nPlease wait...\n" && \
-  webpack && \
   npm run babel:build
 
 RUN printf "starting app...\n"
 CMD npm start
-
