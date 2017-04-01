@@ -1,9 +1,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
-import httpervert from 'httpervert'
 import router from './routes'
 import winston from 'winston'
+import {Server} from 'http'
 
 const options = {
   app: express(),
@@ -12,17 +12,23 @@ const options = {
   logger: winston
 }
 
-const {app, environment, logger} = options
+const {app, environment, logger, port} = options
 
-if (environment === 'development') {
-  app.use(morgan('dev'))
-}
+app.use(morgan('dev'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use('/api', router)
+  
+const server = Server(app).listen(port, function () {
+    logger.info('Environment:', environment)
+    logger.info('Listening on port', port + '...')
+})
+server.timeout = 12000
 
-const server = httpervert(options)
+server.on('request', function (req, res) {
+  logger.info(("processing..."))
+})
 
 export default server

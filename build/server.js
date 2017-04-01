@@ -16,10 +16,6 @@ var _morgan = require('morgan');
 
 var _morgan2 = _interopRequireDefault(_morgan);
 
-var _httpervert = require('httpervert');
-
-var _httpervert2 = _interopRequireDefault(_httpervert);
-
 var _routes = require('./routes');
 
 var _routes2 = _interopRequireDefault(_routes);
@@ -27,6 +23,8 @@ var _routes2 = _interopRequireDefault(_routes);
 var _winston = require('winston');
 
 var _winston2 = _interopRequireDefault(_winston);
+
+var _http = require('http');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37,18 +35,23 @@ const options = {
   logger: _winston2.default
 };
 
-const { app, environment, logger } = options;
+const { app, environment, logger, port } = options;
 
-if (environment === 'development') {
-  logger.info('environment: development');
-  app.use((0, _morgan2.default)('dev'));
-}
+app.use((0, _morgan2.default)('dev'));
 
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use(_bodyParser2.default.json());
 
 app.use('/api', _routes2.default);
 
-const server = (0, _httpervert2.default)(options);
+const server = (0, _http.Server)(app).listen(port, function () {
+  logger.info('Environment:', environment);
+  logger.info('Listening on port', port + '...');
+});
+server.timeout = 12000;
+
+server.on('request', function (req, res) {
+  logger.info("processing...");
+});
 
 exports.default = server;
