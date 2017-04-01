@@ -1,0 +1,14 @@
+version: '2'
+
+services: 
+  bbps:
+    build: .
+    image: github.com/mprather1/docker_express
+    container_name: shintech-bbps
+    env_file:
+      - ./bbps.env
+    ports:
+      - 8000:8000
+    restart: always
+    volumes:
+      - .:/data
